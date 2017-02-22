@@ -283,7 +283,6 @@ textarea {
 
 main {
     margin: 0 auto;
-    width: 40%;
     margin-top: 4%;
 }
 
@@ -363,4 +362,28 @@ body {
 .well {
     background-color: white;
     border: 1px solid white;
+}
+
+@media (min-width: 480px) {
+    main {
+        width: 400px;
+    }
+}
+
+@media (min-width: 768px) {
+    main {
+        width: 450px;
+    }
+}
+
+@media (min-width: 992px) {
+    main {
+        width: 500px;
+    }
+}
+
+@media (min-width: 1200px) {
+    main {
+        width: 550px;
+    }
 }
