@@ -5,9 +5,11 @@ if (notesStorage) {
     for (var day in data) {
         var string = '<div class="day">' + day + '</div>';
         var note = '';
-        for (var time in data[day]) {
-            var noteString = '<span class="note-text">' + data[day][time] + '</span><span class="time">' + time + '</span>';
-            var wellWrapper = wrap_notes(noteString);
+        for (var uid in data[day]) {
+            var text = data[day][uid]['note'];
+            var time = data[day][uid]['time'];
+            var noteString = '<span class="note-text">' + text + '</span><span class="time">' + time + '</span>';
+            var wellWrapper = wrap_notes(noteString, uid);
             note += wellWrapper;
         }
         var dayNotes = string + note; 
@@ -28,18 +30,18 @@ $('#add-note-btn').click(function(e) {
     if (inputVal) {
         if (typeof(localStorage) !== "undefined") {
             var notesStorage = localStorage.getItem("notes");
+            var uniqueId = get_random_id();
             if (notesStorage) {
                 var data = JSON.parse(notesStorage);
-                update_localstorage_data(inputVal, data);
+                update_localstorage_data(inputVal, data, uniqueId);
             }
             else {
-                set_localstorage_data(inputVal);
+                set_localstorage_data(inputVal, uniqueId);
             }
-            append_notes(inputVal);
+            append_notes(inputVal, uniqueId);
             $('.panel-body').show();
         }
         else {
-            // throw error
             $(".panel").effect("shake");
         }
         $('#input-note').val('');
@@ -50,10 +52,9 @@ $('#add-note-btn').click(function(e) {
 });
 
 $('.user-notes').on('click', '.trash-icon', function() {
-    var id = Math.random().toString();
-    console.log(id);
-
-    var element = $(this).closest('.notes-list');
+    var noteElement = $(this).closest('.notes-list');
+    var thisElement = $(this);
+    delete_note(thisElement, noteElement);
     $(this).closest('.notes-list').fadeOut(200);
 });
 
@@ -68,35 +69,35 @@ $('.user-notes').on('click', '.check-icon', function() {
     }
 });
 
-function append_notes(note) {
+function append_notes(note, uniqueId) {
     var datetime = get_current_datetime();
     note = '<span class="note-text">' + note + '</span><span class="time">' + datetime.time + '</span>';
-    var wellWrapper = wrap_notes(note);
+    var wellWrapper = wrap_notes(note, uniqueId);
     $('.user-notes').append(wellWrapper);
 }
 
-function wrap_notes(note) {
-    return '<div class="notes-list well well-sm">' + note + '<span class="util-icons"><i class="trash-icon fa fa-trash-o" aria-hidden="true"></i><i class="check-icon fa fa-check-circle-o" aria-hidden="true"></i></span></div>';
+function wrap_notes(note, uniqueId) {
+    return '<div class="notes-list well well-sm">' + note + '<span class="util-icons"><i id="del-'+uniqueId+'" class="trash-icon fa fa-trash-o" aria-hidden="true"></i><i class="check-icon fa fa-check-circle-o" aria-hidden="true"></i></span></div>';
 }
 
 
-function set_localstorage_data(note) {
+function set_localstorage_data(note, uniqueId) {
     datetime = get_current_datetime();
     var notes_storage_data = {};
     notes_storage_data[datetime.day] = {};
-    notes_storage_data[datetime.day][datetime.time] = note;
+    notes_storage_data[datetime.day][uniqueId] = {'note': note, 'time': datetime.time};
     localStorage.setItem("notes", JSON.stringify(notes_storage_data));
 }
 
-function update_localstorage_data(note, data) {
+function update_localstorage_data(note, data, uniqueId) {
     datetime = get_current_datetime();
     if (data[datetime.day]) {
-        data[datetime.day][datetime.time] = note;
+        data[datetime.day][uniqueId] = {'note': note, 'time': datetime.time};
         localStorage.setItem("notes", JSON.stringify(data));
     }
     else {
         data[datetime.day] = {};
-        data[datetime.day][datetime.time] = note;
+        data[datetime.day][uniqueId] = {'note': note, 'time': datetime.time};
         localStorage.setItem("notes", JSON.stringify(data));
     }
 }
@@ -110,4 +111,16 @@ function get_current_datetime() {
     hours = hours % 12 ? hours % 12 : 12;
     var time =  hours + ":" + minutes + ' ' + ampm;
     return {day: day, time: time};
+}
+
+function delete_note(element, noteElement) {
+    var id = $(element).attr('id').substring(4);
+    var day = $(noteElement).siblings('.day').text();
+    var notesStorage = JSON.parse(localStorage.getItem("notes"));
+    delete notesStorage[day][id];
+    localStorage.setItem("notes", JSON.stringify(notesStorage));
+}
+
+function get_random_id() {
+    return (Math.random() + 1).toString(16).substring(10);
 }
