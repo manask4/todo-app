@@ -3,7 +3,7 @@ if (notesStorage) {
     var data = JSON.parse(notesStorage);
     var allNotes = '';
     for (var day in data) {
-        var string = '<div class="day">' + day + '</div>';
+        var string = '<div class="note-section"><span class="day">' + day + '</span>';
         var note = '';
         for (var uid in data[day]) {
             var text = data[day][uid]['note'];
@@ -12,7 +12,7 @@ if (notesStorage) {
             var wellWrapper = wrap_notes(noteString, uid);
             note += wellWrapper;
         }
-        var dayNotes = string + note; 
+        var dayNotes = string + note + '</div>'; 
         allNotes += dayNotes;
     }
     $('.panel-body').show();
@@ -73,7 +73,15 @@ function append_notes(note, uniqueId) {
     var datetime = get_current_datetime();
     note = '<span class="note-text">' + note + '</span><span class="time">' + datetime.time + '</span>';
     var wellWrapper = wrap_notes(note, uniqueId);
-    $('.user-notes').append(wellWrapper);
+    var day = datetime.day;
+    var dayPresent = $('span:contains('+day+')');
+    if (dayPresent.length == 1) {
+        $(dayPresent).after(wellWrapper);
+    }
+    else {
+        var noteBlock = '<div class="note-section"><span class="day">' + day + '</span>' + wellWrapper + '</div>';
+        $('.user-notes').append(noteBlock);
+    }
 }
 
 function wrap_notes(note, uniqueId) {
@@ -118,6 +126,10 @@ function delete_note(element, noteElement) {
     var day = $(noteElement).siblings('.day').text();
     var notesStorage = JSON.parse(localStorage.getItem("notes"));
     delete notesStorage[day][id];
+    if ($.isEmptyObject(notesStorage[day])) {
+        delete notesStorage[day];
+        $(noteElement).siblings('.day').fadeOut(200);
+    }
     localStorage.setItem("notes", JSON.stringify(notesStorage));
 }
 

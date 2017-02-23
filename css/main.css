@@ -305,6 +305,10 @@ main {
     margin-bottom: 10px;
 }
 
+.note-text {
+    overflow-wrap: break-word;
+}
+
 body {
     background-color: #26a69a;
     color: #212121;
