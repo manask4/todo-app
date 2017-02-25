@@ -4,11 +4,11 @@ self.addEventListener('install', function(e) {
  e.waitUntil(
    caches.open('todo').then(function(cache) {
      return cache.addAll([
-       '/',
-       '/index.html',
-       '/css/main.css',
-       '/css/font-awesome.min.css',
-       '/js/main.js',
+       '/todo-app/',
+       '/todo-app/index.html',
+       '/todo-app/css/main.css',
+       '/todo-app/css/font-awesome.min.css',
+       '/todo-app/js/main.js',
      ]);
    })
  );
