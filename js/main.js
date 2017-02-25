@@ -55,12 +55,12 @@ $('.user-notes').on('click', '.trash-icon', function() {
     var noteElement = $(this).closest('.notes-list');
     var thisElement = $(this);
     delete_note(thisElement, noteElement);
-    $(this).closest('.notes-list').fadeOut(600).remove();
+    //$(this).closest('.notes-list').fadeOut(600).remove();
 });
 
 $('.user-notes').on('click', '.check-icon', function() {
     if ($(this).hasClass('fa-check-circle-o')) {
-        $(this).closest('.well').animate({'background-color':'#ccc'}, 300);
+        $(this).closest('.well').animate({'background-color':'#f7f2c5'}, 300);
         $(this).addClass('fa-check-circle').removeClass('fa-check-circle-o');
     }
     else {
@@ -128,6 +128,9 @@ function delete_note(element, noteElement) {
     if ($.isEmptyObject(notesStorage[day])) {
         delete notesStorage[day];
         $(noteElement).parent().remove();
+    }
+    else {
+        $(element).closest('.notes-list').remove();
     }
     localStorage.setItem("notes", JSON.stringify(notesStorage));
 }
