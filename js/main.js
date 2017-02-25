@@ -127,10 +127,14 @@ function delete_note(element, noteElement) {
     delete notesStorage[day][id];
     if ($.isEmptyObject(notesStorage[day])) {
         delete notesStorage[day];
-        $(noteElement).parent().remove();
+        $(noteElement).parent().effect('drop', function() {
+            $(this).remove();
+        });
     }
     else {
-        $(element).closest('.notes-list').remove();
+        $(element).closest('.notes-list').effect('drop', function() {
+            $(this).remove();
+        });
     }
     localStorage.setItem("notes", JSON.stringify(notesStorage));
 }
