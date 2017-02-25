@@ -55,16 +55,16 @@ $('.user-notes').on('click', '.trash-icon', function() {
     var noteElement = $(this).closest('.notes-list');
     var thisElement = $(this);
     delete_note(thisElement, noteElement);
-    $(this).closest('.notes-list').fadeOut(200);
+    $(this).closest('.notes-list').fadeOut(600).remove();
 });
 
 $('.user-notes').on('click', '.check-icon', function() {
     if ($(this).hasClass('fa-check-circle-o')) {
-        $(this).closest('.well').css({'background-color':'#ccc'});
+        $(this).closest('.well').animate({'background-color':'#ccc'}, 300);
         $(this).addClass('fa-check-circle').removeClass('fa-check-circle-o');
     }
     else {
-        $(this).closest('.well').css({'background-color':'white'});
+        $(this).closest('.well').animate({'background-color':'white'}, 300);
         $(this).addClass('fa-check-circle-o').removeClass('fa-check-circle');
     }
 });
@@ -87,7 +87,6 @@ function append_notes(note, uniqueId) {
 function wrap_notes(note, uniqueId) {
     return '<div class="notes-list well well-sm">' + note + '<span class="util-icons"><i id="del-'+uniqueId+'" class="trash-icon fa fa-trash-o" aria-hidden="true"></i><i class="check-icon fa fa-check-circle-o" aria-hidden="true"></i></span></div>';
 }
-
 
 function set_localstorage_data(note, uniqueId) {
     datetime = get_current_datetime();
@@ -128,11 +127,11 @@ function delete_note(element, noteElement) {
     delete notesStorage[day][id];
     if ($.isEmptyObject(notesStorage[day])) {
         delete notesStorage[day];
-        $(noteElement).siblings('.day').fadeOut(200);
+        $(noteElement).parent().remove();
     }
     localStorage.setItem("notes", JSON.stringify(notesStorage));
 }
 
 function get_random_id() {
-    return (Math.random() + 1).toString(16).substring(10);
+    return (Math.random() + 1).toString(16).substring(2,7);
 }
