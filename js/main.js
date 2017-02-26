@@ -1,13 +1,12 @@
-var notesStorage = localStorage.getItem("notes");
-if (notesStorage != '{}') {
-    var data = JSON.parse(notesStorage);
+var storageData = JSON.parse(localStorage.getItem("notes"));
+if (!$.isEmptyObject(storageData)) {
     var allNotes = '';
-    for (var day in data) {
+    for (var day in storageData) {
         var string = '<div class="note-section"><span class="day">' + day + '</span>';
         var note = '';
-        for (var uid in data[day]) {
-            var text = data[day][uid]['note'];
-            var time = data[day][uid]['time'];
+        for (var uid in storageData[day]) {
+            var text = storageData[day][uid]['note'];
+            var time = storageData[day][uid]['time'];
             var noteString = '<span class="note-text">' + text + '</span><span class="time">' + time + '</span>';
             var wellWrapper = wrap_notes(noteString, uid);
             note += wellWrapper;
