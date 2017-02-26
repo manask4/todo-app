@@ -1,5 +1,6 @@
 $(document).ready(function() {
     $('main').slideDown(300).animate({'opacity': 1}, {'queue': false, 'duration': 300});
+    $('footer').fadeIn(1200);
 });
 
 var storageData = JSON.parse(localStorage.getItem("notes"));

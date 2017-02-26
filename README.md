@@ -1,2 +1,2 @@
-# todo-app
-A simple To-Do application
+# ToDoIt
+A simple To-Do application.
