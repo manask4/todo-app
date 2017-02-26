@@ -1,3 +1,7 @@
+$(document).ready(function() {
+    $('main').slideDown(300).animate({'opacity': 1}, {'queue': false, 'duration': 300});
+});
+
 var storageData = JSON.parse(localStorage.getItem("notes"));
 if (!$.isEmptyObject(storageData)) {
     var allNotes = '';
@@ -43,10 +47,10 @@ $('#add-note-btn').click(function(e) {
         else {
             $(".panel").effect("shake");
         }
-        $('#input-note').val('');
+        $('#input-note').val('').focus();
     }
     else {
-        $(".panel").effect("shake");   
+        $('#input-note').effect("highlight", {color: '#ef9a9a'}, 500).focus();
     }
 });
 
@@ -63,7 +67,8 @@ $('.user-notes').on('click', '.check-icon', function() {
     if ($(this).hasClass('fa-check-circle-o')) {
         $(this).closest('.well').animate({'background-color':'#f7f2c5'}, 300);
         $(this).addClass('fa-check-circle').removeClass('fa-check-circle-o');
-        notesStorage[day][id]['checked'] = 1;
+        var timeStamp = $.now();
+        notesStorage[day][id]['checked'] = timeStamp;
         localStorage.setItem("notes", JSON.stringify(notesStorage));
     }
     else {
@@ -135,21 +140,7 @@ function delete_note(element, noteElement) {
     var id = $(element).attr('id').substring(4);
     var day = $(noteElement).siblings('.day').text();
     var notesStorage = JSON.parse(localStorage.getItem("notes"));
-    delete notesStorage[day][id];
-    if ($.isEmptyObject(notesStorage[day])) {
-        delete notesStorage[day];
-        $(noteElement).parent().effect('drop', function() {
-            $(this).remove();
-        });
-        if ($.isEmptyObject(notesStorage)) {
-            $('.panel-body').hide(300);
-        }
-    }
-    else {
-        $(element).closest('.notes-list').effect('drop', function() {
-            $(this).remove();
-        });
-    }
+    notesStorage = animate_delete(notesStorage, id, day, 'drop');
     localStorage.setItem("notes", JSON.stringify(notesStorage));
 }
 
@@ -169,4 +160,42 @@ function is_checked_note(uid) {
         }
     }
     return false;
+}
+
+setInterval(function() {
+    var currentTime = $.now();
+    var notesStorage = JSON.parse(localStorage.getItem("notes"));
+    if (!$.isEmptyObject(notesStorage)) {
+        for (var day in notesStorage) {
+            for (var id in notesStorage[day]) {
+                if (notesStorage[day][id].hasOwnProperty('checked')) {
+                    var checkedTime = notesStorage[day][id]['checked'];
+                    if (((currentTime - checkedTime)/1000/60) >= 5) {
+                        notesStorage = animate_delete(notesStorage, id, day, 'pulsate');
+                    }
+                }
+            }
+        }
+        localStorage.setItem("notes", JSON.stringify(notesStorage));
+    }
+}, 5000);
+
+function animate_delete(notesStorage, id, day, effectType) {
+    delete notesStorage[day][id];
+    if ($.isEmptyObject(notesStorage[day])) {
+        delete notesStorage[day];
+        var noteSection = $('span:contains('+day+')');
+        $(noteSection).parent().effect(effectType, function() {
+            $(this).remove();
+        });
+        if ($.isEmptyObject(notesStorage)) {
+            $('.panel-body').hide(300);
+        }
+    }
+    else {
+        $('#del-'+id).closest('.notes-list').effect(effectType, function() {
+            $(this).remove();
+        });
+    }
+    return notesStorage;
 }
