@@ -23,7 +23,7 @@
             "type": "image/png"
         }
     ],
-    "start_url": "/?homescreen=true",
+    "start_url": "/todo-app/",
     "orientation": "portrait",
     "display": "standalone",
     "theme_color": "#26a69a",
