@@ -18,6 +18,8 @@ html {
 
 body {
     font-family: 'Montserrat', sans-serif;
+    background-color: #26a69a;
+    color: #212121;
 }
 /*
  * Remove text-shadow in selection highlight:
@@ -322,11 +324,6 @@ main:hover {
     overflow-wrap: break-word;
 }
 
-body {
-    background-color: #26a69a;
-    color: #212121;
-}
-
 .day {
     color: #e5e5e5;
 }
@@ -382,14 +379,21 @@ body {
 }
 
 #author {
-    color: white;
+    color: black;
     padding-left: 5px;
-    transition: all 0.5s ease;
+    transition: all 0.3s ease;
+}
+
+#nojs {
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: 4%;
+    color: black;
 }
 
 #author:hover {
     text-decoration: none;
-    color: black;
+    color: white;
 }
 
 footer {

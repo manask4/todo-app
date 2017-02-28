@@ -5,9 +5,11 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <title>ToDoIt</title>
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0">
 
         <!-- Place favicon.ico in the root directory -->
+        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+        <link rel="manifest" href="manifest.json">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
         <link rel="stylesheet" href="css/normalize.css">
@@ -16,14 +18,15 @@
     </head>
 
     <body>
+      <noscript><div id="nojs">Please enable JavaScript and reload your browser for something awesome!</div></noscript>
       <main>
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="input-group input-group-lg">
-              <input placeholder="Make a note.." autofocus id="input-note" type="text" class="form-control">
+              <input aria-label="Make a note" placeholder="Make a note.." autofocus id="input-note" type="text" class="form-control">
               <span id="add-note-btn" class="input-group-btn">
                 <!--<button class="btn btn-info" type="button"><i class="fa fa-plus-circle fa-lg" aria-hidden="true"></i></button>-->
-                <img id="add-icon" src="img/add-icon-min.png">
+                <img alt="Add Task" id="add-icon" src="img/add-icon-min.png">
               </span>
             </div><!-- /input-group -->
           </div>
@@ -34,7 +37,7 @@
         </div>
       </main>
       <footer>
-        <i class="fa fa-lg fa-github" aria-hidden="true"></i><a target="_blank" href="https://github.com/manask4/todo-app/" id="author">manask4</a>
+        <i class="fa fa-lg fa-github" aria-hidden="true"></i><a target="_blank" rel="noopener" href="https://github.com/manask4/todo-app/" id="author">manask4</a>
       </footer>
       <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
       <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
