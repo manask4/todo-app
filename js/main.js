@@ -128,7 +128,7 @@ function wrapNotes(note, uniqueId) {
     }
 }
 
-function setLocalStorageData(note, uniqueId) {
+function setLocalstorageData(note, uniqueId) {
     datetime = getCurrentDatetime();
     var notesStorageData = {};
     notesStorageData[datetime.day] = {};
